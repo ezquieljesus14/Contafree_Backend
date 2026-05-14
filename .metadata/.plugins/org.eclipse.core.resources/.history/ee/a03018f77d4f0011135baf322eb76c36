@@ -1,0 +1,10 @@
+package com.contafree.auth_service.dto;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class RefreshRequest {
+
+    @NotBlank
+    private String refreshToken;
+}
