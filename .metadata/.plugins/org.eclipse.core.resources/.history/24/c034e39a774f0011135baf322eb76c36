@@ -1,0 +1,16 @@
+package com.contafree.auth_service.service;
+
+import org.springframework.stereotype.Service;
+
+import com.contafree.auth_service.config.JwtProperties;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService {
+
+	private final JwtProperties jwtProperties;
+	
+	public String generate;
+}

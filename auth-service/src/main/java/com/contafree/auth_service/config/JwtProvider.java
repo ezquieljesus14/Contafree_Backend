@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.contafree.auth_service.entity.User;
@@ -17,7 +18,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtProvider {
 
-    private final JwtProperties jwtProperties;
+	@Value("${jwt.secret}")
+	private String privateKey;
+	
+	@Value("${jwt.access-token-expiration}")
+	private long tokenExpiration;
 
     public String generateAccessToken(User user) {
         return Jwts.builder()
@@ -26,13 +31,13 @@ public class JwtProvider {
                 .claim("roles", user.getRoles())
                 .claim("type", "access")
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + jwtProperties.getAccessTokenExpiration()))
+                .expiration(new Date(System.currentTimeMillis() + tokenExpiration))
                 .signWith(getSigningKey())
                 .compact();
     }
 
     public SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
+        byte[] keyBytes = Decoders.BASE64.decode(privateKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

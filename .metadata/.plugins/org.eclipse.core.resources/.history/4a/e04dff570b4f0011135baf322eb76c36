@@ -1,0 +1,5 @@
+package com.contafree.auth_service.service;
+
+public class JwtService {
+
+}

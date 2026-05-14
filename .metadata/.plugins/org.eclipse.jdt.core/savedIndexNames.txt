@@ -7,7 +7,6 @@ INDEX VERSION 1.134+C:\Users\ezequ\OneDrive\Documents\Projectos_Propios\ContaFre
 1342886918.index
 125543216.index
 2132487762.index
-2791121579.index
 1899754360.index
 3531450146.index
 3455827130.index

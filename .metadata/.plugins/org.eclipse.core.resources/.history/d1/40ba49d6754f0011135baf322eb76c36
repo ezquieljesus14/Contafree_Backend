@@ -1,0 +1,5 @@
+package com.contafree.auth_service.filter;
+
+public class JwtAuthenticationFilter {
+
+}
