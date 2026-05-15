@@ -1,6 +1,9 @@
 package com.contafree.auth_service.controller;
 
+import java.util.UUID;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.contafree.auth_service.dto.LoginRequest;
 import com.contafree.auth_service.dto.LoginResponse;
 import com.contafree.auth_service.dto.RefreshRequest;
+import com.contafree.auth_service.dto.UserResponse;
 import com.contafree.auth_service.service.AuthService;
 import com.contafree.common.dto.ApiResponse;
 
@@ -44,5 +48,16 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> logout(@Valid @RequestBody RefreshRequest request) {
         authService.logout(request.getRefreshToken());
         return ResponseEntity.ok(ApiResponse.ok(null));
+    }
+    
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<UserResponse>> getUserIngo(Authentication auth){
+    	UUID userId = (UUID) auth.getPrincipal();
+    	
+        return authService.getCurrentUser(userId)
+                .map(dto -> ResponseEntity.ok(ApiResponse.ok(dto)))
+                .orElse(ResponseEntity.status(404).body(
+                        ApiResponse.error("User not found", "NOT_FOUND")));
+    	
     }
 }

@@ -1,6 +1,7 @@
 package com.contafree.auth_service.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.contafree.auth_service.config.JwtProvider;
 import com.contafree.auth_service.dto.LoginRequest;
 import com.contafree.auth_service.dto.LoginResponse;
+import com.contafree.auth_service.dto.UserResponse;
 import com.contafree.auth_service.entity.RefreshToken;
 import com.contafree.auth_service.entity.User;
 import com.contafree.auth_service.repository.RefreshTokenRepository;
@@ -77,5 +79,16 @@ public class AuthService {
                 .expiresAt(LocalDateTime.now().plusSeconds(refresehTokenExpiration))
                 .build();
         return refreshTokenRepository.save(refreshToken);
+    }
+    
+    
+    public Optional<UserResponse> getCurrentUser(UUID userId) {
+        return userRepository.findById(userId)
+                .map(user -> new UserResponse(
+                		user.getEmail(),
+                		user.getRoles(),
+                		user.getCreatedAt(),
+                		user.getUpdatedAt()
+                ));
     }
 }
