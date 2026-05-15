@@ -5,15 +5,17 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.contafree.auth_service.config.JwtProvider;
+import com.contafree.auth_service.dto.LoginRequest;
+import com.contafree.auth_service.dto.LoginResponse;
 import com.contafree.auth_service.entity.RefreshToken;
 import com.contafree.auth_service.entity.User;
 import com.contafree.auth_service.repository.RefreshTokenRepository;
 import com.contafree.auth_service.repository.UserRepository;
+import com.contafree.common.exception.UnauthorizedException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,10 +33,10 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
+                .orElseThrow(() -> new UnauthorizedException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new BadCredentialsException("Invalid email or password");
+            throw new UnauthorizedException("Invalid email or password");
         }
 
         String accessToken = jwtProvider.generateAccessToken(user);
@@ -49,11 +51,11 @@ public class AuthService {
 
     public LoginResponse refresh(String token) {
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
-                .orElseThrow(() -> new BadCredentialsException("Invalid refresh token"));
+                .orElseThrow(() -> new UnauthorizedException("Invalid refresh token"));
 
         if (refreshToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             refreshTokenRepository.delete(refreshToken);
-            throw new BadCredentialsException("Refresh token expired");
+            throw new UnauthorizedException("Refresh token expired");
         }
 
         String accessToken = jwtProvider.generateAccessToken(refreshToken.getUser());

@@ -1,5 +1,6 @@
 package com.contafree.auth_service.config;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -37,7 +38,6 @@ public class JwtProvider {
     }
 
     public SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(privateKey);
-        return Keys.hmacShaKeyFor(keyBytes);
+    	return Keys.hmacShaKeyFor(privateKey.getBytes(StandardCharsets.UTF_8));
     }
 }
