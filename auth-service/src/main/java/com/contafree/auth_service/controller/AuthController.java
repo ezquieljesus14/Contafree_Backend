@@ -52,7 +52,7 @@ public class AuthController {
     
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> getUserIngo(Authentication auth){
-    	UUID userId = (UUID) auth.getPrincipal();
+    	UUID userId = UUID.fromString((String) auth.getPrincipal());
     	
         return authService.getCurrentUser(userId)
                 .map(dto -> ResponseEntity.ok(ApiResponse.ok(dto)))

@@ -23,7 +23,15 @@ public class DataInitializer {
                 user.setRoles(Set.of("ROLE_USER"));
                 userRepository.save(user);
                 System.out.println(">>> Test user created: test@contafree.com / Test1234!");
-            }
+            } 
+            if (userRepository.findByEmail("testAdmin@contafree.com").isEmpty()) {
+            	User user = new User();
+                user.setEmail("testAdmin@contafree.com");
+                user.setPasswordHash(passwordEncoder.encode("admin1234"));
+                user.setRoles(Set.of("ROLE_ADMIN"));
+                userRepository.save(user);
+                System.out.println(">>> Test Admin created: testAdmin@contafree.com / admin1234");
+			}
         };
     }
 }
