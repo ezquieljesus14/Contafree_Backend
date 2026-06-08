@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import com.contafree.auth_service.dto.LoginRequest;
 import com.contafree.auth_service.dto.LoginResponse;
 import com.contafree.auth_service.dto.RefreshRequest;
 import com.contafree.auth_service.dto.RegisterRequest;
+import com.contafree.auth_service.dto.UpdatePasswordRequest;
 import com.contafree.auth_service.dto.UserResponse;
 import com.contafree.auth_service.service.AuthService;
 import com.contafree.common.dto.ApiResponse;
@@ -53,6 +55,14 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.ok(null));
     }
     
+    @PatchMapping("/me")
+    public ResponseEntity<ApiResponse<Void>> updatePassword(
+            @Valid @RequestBody UpdatePasswordRequest request, Authentication auth) {
+        UUID userId = UUID.fromString((String) auth.getPrincipal());
+        authService.updatePassword(userId, request);
+        return ResponseEntity.ok(ApiResponse.ok(null));
+    }
+
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserResponse>> getCurrentUser(Authentication auth) {
         UUID userId = UUID.fromString((String) auth.getPrincipal());
