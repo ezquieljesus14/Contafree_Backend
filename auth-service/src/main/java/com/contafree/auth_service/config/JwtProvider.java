@@ -10,20 +10,18 @@ import org.springframework.stereotype.Component;
 
 import com.contafree.auth_service.entity.User;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 
 @Component
-@RequiredArgsConstructor
 public class JwtProvider {
 
-	@Value("${jwt.secret}")
-	private String privateKey;
-	
-	@Value("${jwt.access-token-expiration}")
-	private long tokenExpiration;
+    @Value("${jwt.secret}")
+    private String privateKey;
+
+    @Value("${jwt.access-token-expiration}")
+    private long tokenExpiration;
 
     public String generateAccessToken(User user) {
         return Jwts.builder()
@@ -37,7 +35,15 @@ public class JwtProvider {
                 .compact();
     }
 
-    public SecretKey getSigningKey() {
-    	return Keys.hmacShaKeyFor(privateKey.getBytes(StandardCharsets.UTF_8));
+    public Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(privateKey.getBytes(StandardCharsets.UTF_8));
     }
 }

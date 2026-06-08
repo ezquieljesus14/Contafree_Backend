@@ -1,5 +1,0 @@
-package com.contafree.auth_service.config;
-
-public class JwtProvider {
-
-}

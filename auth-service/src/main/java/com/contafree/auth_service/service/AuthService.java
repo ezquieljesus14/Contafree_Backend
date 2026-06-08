@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,13 +24,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-	@Value("${jwt.refresh-token-expiration}")
-	private long refresehTokenExpiration;
-	
-    @Autowired UserRepository userRepository;
-    @Autowired RefreshTokenRepository refreshTokenRepository;
-    @Autowired JwtProvider jwtProvider;
-    @Autowired PasswordEncoder passwordEncoder;
+    @Value("${jwt.refresh-token-expiration}")
+    private long refreshTokenExpiration;
+
+    private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtProvider jwtProvider;
+    private final PasswordEncoder passwordEncoder;
 
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
@@ -76,7 +75,7 @@ public class AuthService {
         RefreshToken refreshToken = RefreshToken.builder()
                 .user(user)
                 .token(UUID.randomUUID().toString())
-                .expiresAt(LocalDateTime.now().plusSeconds(refresehTokenExpiration))
+                .expiresAt(LocalDateTime.now().plusSeconds(refreshTokenExpiration))
                 .build();
         return refreshTokenRepository.save(refreshToken);
     }

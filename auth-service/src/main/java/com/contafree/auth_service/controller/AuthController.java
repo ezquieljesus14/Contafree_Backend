@@ -26,11 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthService authService;
-    
-    @GetMapping("/ping")
-    public String ping() {
-    	return "pinggasjdnañsldn";
-    }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request) {
@@ -51,13 +46,11 @@ public class AuthController {
     }
     
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<UserResponse>> getUserIngo(Authentication auth){
-    	UUID userId = UUID.fromString((String) auth.getPrincipal());
-    	
+    public ResponseEntity<ApiResponse<UserResponse>> getCurrentUser(Authentication auth) {
+        UUID userId = UUID.fromString((String) auth.getPrincipal());
         return authService.getCurrentUser(userId)
                 .map(dto -> ResponseEntity.ok(ApiResponse.ok(dto)))
                 .orElse(ResponseEntity.status(404).body(
                         ApiResponse.error("User not found", "NOT_FOUND")));
-    	
     }
 }

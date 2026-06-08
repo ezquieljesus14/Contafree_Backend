@@ -1,8 +1,6 @@
 package com.contafree.auth_service.config;
 
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,9 +37,6 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST,
                         "/api/v1/auth/login",
                         "/api/v1/auth/refresh").permitAll()
-                    .requestMatchers(HttpMethod.GET,
-                    		"/api/v1/auth/ping").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/v1/auth/me").hasAuthority("ROLE_USER")
                     .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, 
