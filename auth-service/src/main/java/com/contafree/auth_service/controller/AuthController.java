@@ -2,6 +2,7 @@ package com.contafree.auth_service.controller;
 
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.contafree.auth_service.dto.LoginRequest;
 import com.contafree.auth_service.dto.LoginResponse;
 import com.contafree.auth_service.dto.RefreshRequest;
+import com.contafree.auth_service.dto.RegisterRequest;
 import com.contafree.auth_service.dto.UserResponse;
 import com.contafree.auth_service.service.AuthService;
 import com.contafree.common.dto.ApiResponse;
@@ -26,6 +28,12 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthService authService;
+
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<UserResponse>> register(@Valid @RequestBody RegisterRequest request) {
+        UserResponse response = authService.register(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.ok(response));
+    }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@Valid @RequestBody LoginRequest request) {

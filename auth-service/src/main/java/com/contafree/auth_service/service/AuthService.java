@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import com.contafree.auth_service.config.JwtProvider;
 import com.contafree.auth_service.dto.LoginRequest;
 import com.contafree.auth_service.dto.LoginResponse;
+import com.contafree.auth_service.dto.RegisterRequest;
 import com.contafree.auth_service.dto.UserResponse;
 import com.contafree.auth_service.entity.RefreshToken;
 import com.contafree.auth_service.entity.User;
 import com.contafree.auth_service.repository.RefreshTokenRepository;
 import com.contafree.auth_service.repository.UserRepository;
+import com.contafree.common.exception.DuplicateResourceException;
 import com.contafree.common.exception.UnauthorizedException;
 
 import lombok.RequiredArgsConstructor;
@@ -81,6 +83,19 @@ public class AuthService {
     }
     
     
+    public UserResponse register(RegisterRequest request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new DuplicateResourceException("email", "Email already registered");
+        }
+        User user = User.builder()
+                .email(request.getEmail())
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .roles(request.getRoles())
+                .build();
+        User saved = userRepository.save(user);
+        return new UserResponse(saved.getEmail(), saved.getRoles(), saved.getCreatedAt(), saved.getUpdatedAt());
+    }
+
     public Optional<UserResponse> getCurrentUser(UUID userId) {
         return userRepository.findById(userId)
                 .map(user -> new UserResponse(

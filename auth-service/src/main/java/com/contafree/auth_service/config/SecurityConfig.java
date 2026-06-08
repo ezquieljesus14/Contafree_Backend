@@ -37,6 +37,8 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST,
                         "/api/v1/auth/login",
                         "/api/v1/auth/refresh").permitAll()
+                    .requestMatchers(HttpMethod.POST,
+                        "/api/v1/auth/register").hasAuthority("ROLE_ADMIN")
                     .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, 
