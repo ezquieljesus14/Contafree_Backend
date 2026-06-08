@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.contafree.common.dto.ApiResponse;
+import com.contafree.common.exception.DuplicateResourceException;
 import com.contafree.common.exception.ResourceNotFoundException;
 import com.contafree.common.exception.UnauthorizedException;
 
@@ -25,6 +26,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiResponse<Void> handleNotFound(ResourceNotFoundException ex) {
         return ApiResponse.error(ex.getMessage(), "NOT_FOUND");
+    }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiResponse<Void> handleDuplicate(DuplicateResourceException ex) {
+        return ApiResponse.error(ex.getField() + ": " + ex.getMessage(), "DUPLICATE_RESOURCE");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
