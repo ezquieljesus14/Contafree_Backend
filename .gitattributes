@@ -1,0 +1,19 @@
+# Normalize all text files to LF on commit
+* text=auto eol=lf
+
+# Explicit overrides
+*.java      text eol=lf
+*.xml       text eol=lf
+*.properties text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.json      text eol=lf
+*.md        text eol=lf
+*.sh        text eol=lf
+
+# Windows scripts keep CRLF
+*.cmd       text eol=crlf
+*.bat       text eol=crlf
+
+# Maven wrapper
+mvnw        text eol=lf
