@@ -7,7 +7,7 @@ import com.contafree.auth_service.dto.UserResponse;
 import com.contafree.auth_service.entity.User;
 
 @Mapper(componentModel = "spring")
-public interface userMapper {
+public interface UserMapper {
 
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "passwordHash", ignore = true)
