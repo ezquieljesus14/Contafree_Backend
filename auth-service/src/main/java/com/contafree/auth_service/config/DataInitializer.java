@@ -27,10 +27,10 @@ public class DataInitializer {
             if (userRepository.findByEmail("testAdmin@contafree.com").isEmpty()) {
             	User user = new User();
                 user.setEmail("testAdmin@contafree.com");
-                user.setPasswordHash(passwordEncoder.encode("admin1234"));
+                user.setPasswordHash(passwordEncoder.encode("Admin1234!Cf"));
                 user.setRoles(Set.of("ROLE_ADMIN"));
                 userRepository.save(user);
-                System.out.println(">>> Test Admin created: testAdmin@contafree.com / admin1234");
+                System.out.println(">>> Test Admin created: testAdmin@contafree.com / Admin1234!Cf");
 			}
         };
     }
