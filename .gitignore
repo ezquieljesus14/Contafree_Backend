@@ -15,6 +15,7 @@ target/
 
 # Environment 
 .env
+.application-dev.properties
 
 # OS
 .DS_Store
@@ -30,3 +31,4 @@ postgres_data/
 #db
 **/mysql_data/
 **/mysql_data/*
+/.metadata/
