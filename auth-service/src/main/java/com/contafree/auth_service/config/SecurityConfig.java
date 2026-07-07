@@ -39,6 +39,10 @@ public class SecurityConfig {
                         "/api/v1/auth/refresh").permitAll()
                     .requestMatchers(HttpMethod.POST,
                         "/api/v1/auth/register").hasAuthority("ROLE_ADMIN")
+                    .requestMatchers(
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**").permitAll()
                     .requestMatchers("/error").permitAll()
                     .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, 
