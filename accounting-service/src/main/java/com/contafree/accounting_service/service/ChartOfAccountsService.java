@@ -41,7 +41,7 @@ public class ChartOfAccountsService {
     @Transactional
     public ChartOfAccountsResponse create(ChartOfAccountsRequest request) {
         if (repository.existsByCode(request.getCode())) {
-            throw new DuplicateResourceException("Account code already exists: " + request.getCode());
+            throw new DuplicateResourceException("code", "Account code already exists: " + request.getCode());
         }
         ChartOfAccounts entity = ChartOfAccounts.builder()
                 .code(request.getCode())
