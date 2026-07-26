@@ -17,35 +17,5 @@ services:
       timeout: 5s
       retries: 5
 
-  auth-service:
-    build: ./auth-service
-    container_name: contafree-auth
-    ports:
-      - "8085:8080"
-    environment:
-      DB_URL: jdbc:postgresql://postgres:5432/auth_db
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      SPRING_PROFILES_ACTIVE: prod
-    depends_on:
-      postgres:
-        condition: service_healthy
-
-  accounting-service:
-    build: ./accounting-service
-    container_name: contafree-accounting
-    ports:
-      - "8081:8081"
-    environment:
-      DB_URL: jdbc:postgresql://postgres:5432/accounting_db
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      SPRING_PROFILES_ACTIVE: prod
-    depends_on:
-      postgres:
-        condition: service_healthy
-
 volumes:
   postgres_data:
