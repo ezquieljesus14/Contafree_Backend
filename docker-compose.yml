@@ -33,7 +33,9 @@ services:
         condition: service_healthy
 
   accounting-service:
-    build: ./accounting-service
+    build:
+      context: .
+      dockerfile: accounting-service/Dockerfile
     container_name: contafree-accounting
     ports:
       - "8081:8081"
