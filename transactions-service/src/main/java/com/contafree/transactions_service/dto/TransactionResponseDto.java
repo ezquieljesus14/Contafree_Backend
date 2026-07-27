@@ -10,13 +10,13 @@ import com.contafree.transactions_service.entity.Transaction.TransactionStatus;
 import lombok.Data;
 
 @Data
-public class TransactionResponse {
+public class TransactionResponseDto {
     private UUID id;
     private TransactionType type;
     private BigDecimal amount;
     private String description;
     private LocalDate date;
-    private CategoryResponse category;
+    private CategoryResponseDto category;
     private UUID contactId;
     private TransactionStatus status;
     private UUID journalEntryId;

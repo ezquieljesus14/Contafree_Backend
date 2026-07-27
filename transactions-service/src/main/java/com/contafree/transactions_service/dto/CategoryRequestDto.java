@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class CategoryRequest {
+public class CategoryRequestDto {
 
     @NotBlank
     @Size(max = 100)

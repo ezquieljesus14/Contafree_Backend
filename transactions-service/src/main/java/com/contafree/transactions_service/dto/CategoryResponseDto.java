@@ -7,7 +7,7 @@ import com.contafree.transactions_service.entity.Category.TransactionType;
 import lombok.Data;
 
 @Data
-public class CategoryResponse {
+public class CategoryResponseDto {
     private UUID id;
     private String name;
     private TransactionType type;

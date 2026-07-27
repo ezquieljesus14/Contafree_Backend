@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class TransactionRequest {
+public class TransactionRequestDto {
 
     @NotNull
     @Schema(description = "Tipo de transacción", example = "INCOME")
