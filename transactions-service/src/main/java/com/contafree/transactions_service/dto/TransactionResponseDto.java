@@ -19,6 +19,7 @@ public class TransactionResponseDto {
     private CategoryResponseDto category;
     private UUID contactId;
     private TransactionStatus status;
+    private String statusReason;
     private UUID journalEntryId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

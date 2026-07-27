@@ -66,6 +66,9 @@ public class Transaction {
     @Column(name = "journal_entry_id")
     private UUID journalEntryId;
 
+    @Column(name = "status_reason", length = 50)
+    private String statusReason;
+
     @Column(name = "idempotency_key", unique = true, length = 36)
     private String idempotencyKey;
 
