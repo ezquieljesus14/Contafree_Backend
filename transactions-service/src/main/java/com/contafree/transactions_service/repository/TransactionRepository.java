@@ -16,4 +16,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     List<Transaction> findByStatusAndDeletedFalse(TransactionStatus status);
     Optional<Transaction> findByIdAndDeletedFalse(UUID id);
     boolean existsByCategoryId(UUID categoryId);
+    Optional<Transaction> findByIdempotencyKey(String idempotencyKey);
 }

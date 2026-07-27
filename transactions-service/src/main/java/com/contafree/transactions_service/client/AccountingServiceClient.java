@@ -22,20 +22,24 @@ public class AccountingServiceClient {
         this.restClient = RestClient.builder().baseUrl(baseUrl).build();
     }
 
-    public Optional<UUID> findJournalForDate(String token, LocalDate date) {
+    public JournalLookupResult findJournalForDate(String token, LocalDate date) {
         try {
             ApiWrapper<List<JournalDto>> response = restClient.get()
                     .uri("/api/v1/accounting/journals")
                     .header("Authorization", token)
                     .retrieve()
                     .body(new ParameterizedTypeReference<>() {});
-            if (response == null || response.data() == null) return Optional.empty();
+            if (response == null || response.data() == null || response.data().isEmpty()) {
+                return new JournalLookupResult.NoOpenPeriod();
+            }
             return response.data().stream()
                     .filter(j -> !date.isBefore(j.startDate()) && !date.isAfter(j.endDate()))
                     .max(Comparator.comparing(JournalDto::startDate))
-                    .map(JournalDto::id);
+                    .map(JournalDto::id)
+                    .<JournalLookupResult>map(JournalLookupResult.Found::new)
+                    .orElse(new JournalLookupResult.NoMatchingPeriod());
         } catch (RestClientException e) {
-            return Optional.empty();
+            return new JournalLookupResult.ServiceUnavailable();
         }
     }
 
