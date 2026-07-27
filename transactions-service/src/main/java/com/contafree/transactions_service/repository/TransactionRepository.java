@@ -15,4 +15,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, UUID> 
     List<Transaction> findByUserIdAndDateBetweenAndDeletedFalse(UUID userId, LocalDate from, LocalDate to);
     List<Transaction> findByStatusAndDeletedFalse(TransactionStatus status);
     Optional<Transaction> findByIdAndDeletedFalse(UUID id);
+    boolean existsByCategoryId(UUID categoryId);
 }
