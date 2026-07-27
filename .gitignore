@@ -13,9 +13,10 @@ target/
 # IDE - VS Code
 .vscode/
 
-# Environment 
+# Environment
 .env
 .application-dev.properties
+**/application-local.properties
 
 # OS
 .DS_Store
