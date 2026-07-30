@@ -1,0 +1,35 @@
+package com.contafree.transactions_service.config;
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import org.springdoc.core.customizers.OpenApiCustomizer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@OpenAPIDefinition(
+    info = @Info(
+        title = "Transactions Service API",
+        version = "1.0.0",
+        description = "Gestión de transacciones financieras y categorías"
+    )
+)
+@SecurityScheme(
+    name = "bearerAuth",
+    type = SecuritySchemeType.HTTP,
+    scheme = "bearer",
+    bearerFormat = "JWT"
+)
+@Configuration
+public class OpenApiConfig {
+
+    @Bean
+    public OpenApiCustomizer removeLinksCustomizer() {
+        return openApi -> {
+            if (openApi.getComponents() != null) {
+                openApi.getComponents().setLinks(null);
+            }
+        };
+    }
+}
